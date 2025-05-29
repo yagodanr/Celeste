@@ -1,5 +1,7 @@
 #!/bin/bash
 
+libs="-l SDL2"
 no_warnings="-Wno-writable-strings -Wno-format-security"
 
-clang++ -g src/main.cpp -o celeste $no_warnings
+# Compile all source files and link with SDL2
+clang++ -g src/*.cpp -o celeste $libs $no_warnings
