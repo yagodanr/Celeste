@@ -22,7 +22,7 @@ enum TextColor {
 };
 
 template<typename ...Args>
-void _log(char* prefix, char* msg, TextColor textColor, Args... args) {
+void _log(const char* prefix, const char* msg, const TextColor textColor, const Args... args) {
     static char* TextColorTable[TEXT_COLOR_COUNT] = {
         "\x1b[30m", // TEXT_COLOR_BLACK
         "\x1b[31m", // TEXT_COLOR_RED
