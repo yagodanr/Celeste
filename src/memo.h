@@ -1,6 +1,9 @@
 #pragma once
 
 #include <cstdlib>
+// Used to get the edit timestamp of files
+#include <sys/stat.h>
+
 #include "logger.h"
 
 
@@ -25,36 +28,14 @@ struct BumpAllocator {
 };
 
 
-BumpAllocator make_bump_allocator(size_t size) {
-    BumpAllocator result = {};
+BumpAllocator make_bump_allocator(size_t size);
 
-    result.memory = (char*) calloc(size, sizeof(char));
-    if(!result.memory) {
-        SM_ASSERT(false, "Failed to allocate memory for the Bump");
-        return BumpAllocator{};
-    }
+char* allocate_bump(size_t size, BumpAllocator* bumpAllocator);
 
-    result.capacity = size;
-    return result;
 
-}
+long long get_timestamp(const char* file);
+bool file_exists(const char* filePath);
+long get_file_size(const char* filePath);
 
-char* allocate_bump(size_t size, BumpAllocator buffer) {
-    // 20 -> 24
-    // 16 -> 16
-    // 8 -> 8
-    // 1 -> 8
-    // 9 -> 16
-    // 8 * ((size+7) // 8)
-    size_t alignedSize = (size+BUMP_ALLOCATOR_ALIGNMENT) & (~BUMP_ALLOCATOR_ALIGNMENT);
-    if(buffer.used + alignedSize > buffer.capacity) {
-        SM_ASSERT(false, "BumpAllocatorOverflow");
-        return nullptr;
-    }
-
-    char* result = buffer.memory + buffer.used;
-    buffer.used += alignedSize;
-
-    return result;
-}
-
+char* read_file(const char* filePath, long* fileSize, char* buffer);
+char* read_file(const char* filePath, long* fileSize, BumpAllocator* bumpAllocator);
