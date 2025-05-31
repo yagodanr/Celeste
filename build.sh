@@ -1,6 +1,6 @@
 #!/bin/bash
 
-libs="-l SDL2"
+libs="-l SDL2 -l GL -l GLEW"
 no_warnings="-Wno-writable-strings -Wno-format-security"
 
 # Compile all source files and link with SDL2
