@@ -1,5 +1,6 @@
 #pragma once
 
+#include <stdio.h>
 
 enum TextColor {
   TEXT_COLOR_BLACK,
