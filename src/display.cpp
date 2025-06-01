@@ -1,6 +1,28 @@
 #include "display.h"
 
 
+#ifdef DEBUG
+static void APIENTRY gl_debug_callback(GLenum source, GLenum type, GLuint id, GLenum severity,
+                                         GLsizei length, const GLchar* message, const void* user)
+{
+  if(severity == GL_DEBUG_SEVERITY_LOW ||
+     severity == GL_DEBUG_SEVERITY_MEDIUM ||
+     severity == GL_DEBUG_SEVERITY_HIGH)
+  {
+    SM_ASSERT(false, "OpenGL Error: %s", message);
+  }
+  else
+  {
+    SM_TRACE((char*)message);
+  }
+}
+
+#endif
+
+
+
+
+
 Display::Display(int width, int height, char* title) {
     SDL_Init(SDL_INIT_EVERYTHING);
 
@@ -42,6 +64,13 @@ Display::Display(int width, int height, char* title) {
     this->m_isClosed = false;
     // might break down on multiwindows or multithreading
     SDL_GL_MakeCurrent(this->m_window, this->m_glContext); // make context current (Claude suggested)
+
+
+    #ifdef DEBUG
+    glDebugMessageCallback(&gl_debug_callback, nullptr);
+    glEnable(GL_DEBUG_OUTPUT_SYNCHRONOUS);
+    glEnable(GL_DEBUG_OUTPUT);
+    #endif
 }
 
 Display::~Display() {
