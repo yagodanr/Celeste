@@ -2,16 +2,17 @@
 
 
 BumpAllocator make_bump_allocator(size_t size) {
-    BumpAllocator result = {};
+    BumpAllocator* result = new BumpAllocator();
 
-    result.memory = (char*) calloc(size, sizeof(char));
-    if(!result.memory) {
+    result->memory = (char*) calloc(size, sizeof(char));
+    // result->memory = (char*) malloc(size);
+    if(result->memory == nullptr) {
         SM_ASSERT(false, "Failed to allocate memory for the Bump");
-        return BumpAllocator{};
+        return *result;
     }
 
-    result.capacity = size;
-    return result;
+    result->capacity = size;
+    return *result;
 
 }
 
@@ -111,12 +112,18 @@ char* read_file(const char* filePath, long* fileSize, BumpAllocator* bumpAllocat
 
 
     *fileSize = 0;
-    long fileSize2 = get_file_size(filePath);
-    if(!fileSize2) {
+    *fileSize = get_file_size(filePath);
+    if(!fileSize) {
         SM_WARN("File %s empty during reading", filePath);
     }
 
-    return read_file(filePath, fileSize, allocate_bump(*fileSize+1, bumpAllocator));
+    char* buffer = allocate_bump(*fileSize+1, bumpAllocator);
+    if(!buffer) {
+        SM_ASSERT(false, "Failed to allocate memory for reading file %s", filePath);
+        return nullptr;
+    }
+    memset(buffer, 0, *fileSize+1);
+    return read_file(filePath, fileSize, buffer);
 }
 
 
