@@ -4,17 +4,19 @@
 // Used to get the edit timestamp of files
 #include <sys/stat.h>
 
+#include <string.h>
+
 #include "logger.h"
 
 
-#define BIT(x)  1 << x;
-#define KB(x)   (unsigned long long) 1024 * x;
-#define MB(x)   (unsigned long long) 1024 * KB(x);
-#define GB(x)   (unsigned long long) 1024 * MB(x);
+#define BIT(x)  1 << x
+#define KB(x)   ((unsigned long long) 1024 * x)
+#define MB(x)   ((unsigned long long) 1024 * KB(x))
+#define GB(x)   ((unsigned long long) 1024 * MB(x))
 
 
 // align buffer to be a multiple of 8
-#define BUMP_ALLOCATOR_ALIGNMENT 8-1
+#define BUMP_ALLOCATOR_ALIGNMENT (8-1)
 
 
 struct BumpAllocator {
