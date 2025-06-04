@@ -8,7 +8,7 @@
 #include "display.h"
 #include "memo.h"
 #include "shaders.h"
-
+#include "texture.h"
 
 
 int main() {
@@ -18,6 +18,7 @@ int main() {
     Display display(800, 600, "Celeste");
 
     Shaders shaders(&transientStorage);
+    Texture texture;
 
     while(!display.isClosed()) {
         display.update();
