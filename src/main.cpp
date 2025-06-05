@@ -32,6 +32,9 @@ int main() {
         // std::string debug_height = "height =\t" + std::to_string(display.height);
         // SM_TRACE(debug_width.c_str());
         // SM_TRACE(debug_height.c_str());
+
+
+        transientStorage.used = 0;
     }
 
     return 0;

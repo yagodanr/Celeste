@@ -41,3 +41,7 @@ long get_file_size(const char* filePath);
 
 char* read_file(const char* filePath, long* fileSize, char* buffer);
 char* read_file(const char* filePath, long* fileSize, BumpAllocator* bumpAllocator);
+
+bool write_file(const char* filePath, char* buffer, const int size);
+bool copy_file(const char* fromPath, const char* toPath, char* buffer);
+bool copy_file(const char* fromPath, const char* toPath, BumpAllocator* bumpAllocator);
