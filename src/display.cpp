@@ -1,4 +1,5 @@
 #include "display.h"
+#include "sprite.h"
 
 
 #ifdef DEBUG
@@ -83,7 +84,7 @@ bool Display::isClosed() {
     return this->m_isClosed;
 }
 
-void Display::update() {
+void Display::update(const Shaders* const shader) {
     SDL_Event e;
     while(SDL_PollEvent(&e)) {
         switch(e.type) {
@@ -97,6 +98,20 @@ void Display::update() {
                 }
         }
 
+    }
+
+    glViewport(0, 0, this->width, this->height);
+
+    Vec2 screenSize = {(float)this->width, (float) this->height};
+    glUniform2fv(shader->screenSizeID, 1, &screenSize.x);
+
+    {
+        glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(Transform)*renderContext.transforms_count,
+                        renderContext.transforms);
+        glDrawArraysInstanced(GL_TRIANGLES, 0, 6, renderContext.transforms_count);
+
+        // To not redraw old instances;
+        renderContext.transforms_count = 0;
     }
 
     SDL_GL_SwapWindow(this->m_window);

@@ -31,4 +31,6 @@ Texture::Texture() {
     // Don't rely on textures colorspace. Otherwise every texture would be darker
     glEnable(GL_FRAMEBUFFER_SRGB);
     glDisable(0x809D); // disable multisampling
+
+
 }

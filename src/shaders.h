@@ -14,6 +14,9 @@ public:
     Shaders(BumpAllocator* bumpAllocator);
     virtual ~Shaders();
 
+    void bind();
+
+    GLuint screenSizeID;
 
 private:
 

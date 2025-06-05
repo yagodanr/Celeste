@@ -4,7 +4,7 @@
 
 
 #include "logger.h"
-
+#include "sprite.h"
 
 
 #define TEXTURE_PATH "assets/textures/texture_atlas.png"
@@ -16,5 +16,6 @@ public:
 
 private:
     GLuint m_texture;
+    GLuint m_SBO;
 };
 

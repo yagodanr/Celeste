@@ -4,6 +4,7 @@
 #include <GL/glew.h>
 
 #include "logger.h"
+#include "shaders.h"
 
 class Display {
 public:
@@ -15,7 +16,7 @@ public:
     bool isClosed();
 
 
-    void update();
+    void update(const Shaders* const shader);
     void clear(float r, float g, float b, float a);
 
 private:

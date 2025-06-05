@@ -1,4 +1,5 @@
 #include "shaders.h"
+#include "sprite.h"
 
 Shaders::Shaders(BumpAllocator* bumpAllocator) {
 
@@ -25,12 +26,24 @@ Shaders::Shaders(BumpAllocator* bumpAllocator) {
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_GREATER);
 
+    this->screenSizeID = glGetUniformLocation(this->m_program, "screenSize");
 
-    glUseProgram(this->m_program);
+    // Transform Storage buffer
+    {
+        GLuint SBO;
+        glGenBuffers(1, &SBO);
+        glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, SBO);
+        glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(Transform)*MAX_SPRITES, renderContext.transforms, GL_DYNAMIC_DRAW);
+    }
+
 }
 Shaders::~Shaders() {
     glDeleteProgram(this->m_program);
 
+}
+
+void Shaders::bind() {
+    glUseProgram(this->m_program);
 }
 
 
