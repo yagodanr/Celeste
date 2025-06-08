@@ -106,12 +106,12 @@ void Display::update(const Shaders* const shader) {
     glUniform2fv(shader->screenSizeID, 1, &screenSize.x);
 
     {
-        glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(Transform)*renderContext.transforms_count,
-                        renderContext.transforms);
-        glDrawArraysInstanced(GL_TRIANGLES, 0, 6, renderContext.transforms_count);
+        glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(Transform)*renderContext->transforms_count,
+                        renderContext->transforms);
+        glDrawArraysInstanced(GL_TRIANGLES, 0, 6, renderContext->transforms_count);
 
         // To not redraw old instances;
-        renderContext.transforms_count = 0;
+        renderContext->transforms_count = 0;
     }
 
     SDL_GL_SwapWindow(this->m_window);

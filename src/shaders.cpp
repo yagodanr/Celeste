@@ -33,7 +33,7 @@ Shaders::Shaders(BumpAllocator* bumpAllocator) {
         GLuint SBO;
         glGenBuffers(1, &SBO);
         glBindBufferBase(GL_SHADER_STORAGE_BUFFER, 0, SBO);
-        glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(Transform)*MAX_SPRITES, renderContext.transforms, GL_DYNAMIC_DRAW);
+        glBufferData(GL_SHADER_STORAGE_BUFFER, sizeof(Transform)*MAX_SPRITES, renderContext->transforms, GL_DYNAMIC_DRAW);
     }
 
 }

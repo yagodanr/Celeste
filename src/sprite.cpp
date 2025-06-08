@@ -1,6 +1,6 @@
 #include "sprite.h"
 
-RenderContext renderContext;
+RenderContext* renderContext;
 
 
 void draw_sprite(SpriteID id, Vec2 pos, Vec2 size) {
@@ -12,5 +12,5 @@ void draw_sprite(SpriteID id, Vec2 pos, Vec2 size) {
     t.pos = pos;
     t.size = size;
 
-    renderContext.transforms[renderContext.transforms_count++] = t;
+    renderContext->transforms[renderContext->transforms_count++] = t;
 }

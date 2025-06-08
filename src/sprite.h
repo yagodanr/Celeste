@@ -55,7 +55,7 @@ struct RenderContext {
     int transforms_count;
     Transform transforms[MAX_SPRITES];
 };
-extern RenderContext renderContext;
+extern RenderContext* renderContext;
 
 
 void draw_sprite(SpriteID id, Vec2 pos, Vec2 size);

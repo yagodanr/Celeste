@@ -1,6 +1,7 @@
 #pragma once
 
 #include <stdio.h>
+#include "platform_specific.h"
 
 enum TextColor {
   TEXT_COLOR_BLACK,
@@ -58,13 +59,6 @@ void _log(const char* prefix, const char* msg, const TextColor textColor, const 
 
 
 
-#ifdef _WIN32
-#define DEBUG_BREAK() __debugbreak()
-#elif __linux__
-#define DEBUG_BREAK() __builtin_debugtrap()
-#elif __APPLE__
-#define DEBUG_BREAK() __builtin_trap()
-#endif
 
 #define SM_ASSERT(x, msg, ...)    \
 {                                 \
