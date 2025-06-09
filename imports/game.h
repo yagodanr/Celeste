@@ -1,6 +1,6 @@
 #pragma once
 
-#include "sprite.h"
+#include "rendering.h"
 #include "platform_specific.h"
 
 extern "C" {

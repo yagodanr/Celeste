@@ -1,4 +1,4 @@
-#include "../game.h"
+#include "imports/game.h"
 
 
 EXPORT_FUNC void update_game(RenderContext* renderContextIn) {

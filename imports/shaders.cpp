@@ -1,5 +1,5 @@
 #include "shaders.h"
-#include "sprite.h"
+#include "rendering.h"
 
 Shaders::Shaders(BumpAllocator* bumpAllocator) {
 

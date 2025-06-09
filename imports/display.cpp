@@ -1,5 +1,5 @@
 #include "display.h"
-#include "sprite.h"
+#include "rendering.h"
 
 
 #ifdef DEBUG

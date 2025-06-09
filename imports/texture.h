@@ -4,7 +4,7 @@
 
 
 #include "logger.h"
-#include "sprite.h"
+#include "rendering.h"
 
 
 #define TEXTURE_PATH "assets/textures/texture_atlas.png"

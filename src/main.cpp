@@ -3,15 +3,15 @@
 
 #define DEBUG
 
-#include "platform_specific.h"
+#include "imports/platform_specific.h"
 
-#include "logger.h"
-#include "display.h"
-#include "memo.h"
-#include "shaders.h"
-#include "texture.h"
-#include "sprite.h"
-#include "game.h"
+#include "imports/logger.h"
+#include "imports/display.h"
+#include "imports/memo.h"
+#include "imports/shaders.h"
+#include "imports/texture.h"
+#include "imports/rendering.h"
+#include "imports/game.h"
 
 
 typedef decltype(update_game) update_game_type;

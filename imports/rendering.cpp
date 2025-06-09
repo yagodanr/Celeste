@@ -1,4 +1,4 @@
-#include "sprite.h"
+#include "rendering.h"
 
 RenderContext* renderContext;
 
