@@ -14,6 +14,7 @@ layout(std430, binding = 0) buffer TransformSBO {
 layout (location = 0) out vec2 textureCoordsOut;
 
 uniform vec2 screenSize;
+uniform mat4 orthoProj;
 
 void main() {
 
@@ -28,9 +29,9 @@ void main() {
         inst.pos + inst.size                        // Bottom Right
     };
     vec2 vertex = vertices[gl_VertexID];
-    //normalize it
-    vertex.y = -vertex.y + screenSize.y;
-    vertex = 2*(vertex / screenSize) - 1.0;
+    // //normalize it
+    // vertex.y = -vertex.y + screenSize.y;
+    // vertex = 2*(vertex / screenSize) - 1.0;
 
     float left = inst.atlasOffset.x;
     float right = inst.atlasOffset.x + inst.spriteSize.x;
@@ -47,6 +48,6 @@ void main() {
     };
 
 
-    gl_Position = vec4(vertex, 0.0, 1.0);
+    gl_Position = orthoProj * vec4(vertex, 0.0, 1.0);
     textureCoordsOut = textureCoords[gl_VertexID];
 }

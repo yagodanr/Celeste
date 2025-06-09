@@ -4,8 +4,6 @@
 #include <GL/glew.h>
 
 #include "logger.h"
-#include "shaders.h"
-
 class Display {
 public:
     int width;
@@ -16,8 +14,10 @@ public:
     bool isClosed();
 
 
-    void update(const Shaders* const shader);
+    void update();
     void clear(float r, float g, float b, float a);
+
+    void init_uniforms(const GLuint& program);
 
 private:
     SDL_Window* m_window;

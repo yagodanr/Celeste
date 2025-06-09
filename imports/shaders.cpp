@@ -1,3 +1,5 @@
+#include "globals.h"
+
 #include "shaders.h"
 #include "rendering.h"
 
@@ -25,8 +27,6 @@ Shaders::Shaders(BumpAllocator* bumpAllocator) {
 
     glEnable(GL_DEPTH_TEST);
     glDepthFunc(GL_GREATER);
-
-    this->screenSizeID = glGetUniformLocation(this->m_program, "screenSize");
 
     // Transform Storage buffer
     {

@@ -3,7 +3,12 @@
 
 #define DEBUG
 
+#include "imports/globals.h"
 #include "imports/platform_specific.h"
+RenderContext* renderContext;
+Uniforms* uniforms;
+GameState* gameState;
+
 
 #include "imports/logger.h"
 #include "imports/display.h"
@@ -32,12 +37,23 @@ int main() {
         SM_ASSERT(false, "Failed to allocate memory for renderContext");
         return 1;
     }
+    uniforms = (Uniforms*)allocate_bump(sizeof(Uniforms), &persistentStorage);
+    if(!uniforms) {
+        SM_ASSERT(false, "Failed to allocate memory for uniforms");
+        return 1;
+    }
+    gameState = (GameState*)allocate_bump(sizeof(GameState), &persistentStorage);
+    if(!gameState) {
+        SM_ASSERT(false, "Failed to allocate memory for gameState");
+        return 1;
+    }
 
     Display display(800, 600, "Celeste");
 
     Shaders shaders(&transientStorage);
     Texture texture;
 
+    display.init_uniforms(shaders.get_program());
     shaders.bind();
     while(!display.isClosed()) {
         #ifdef DEBUG
@@ -45,8 +61,8 @@ int main() {
         #endif
 
         display.clear(1, 0.3, 0.3, 1);
-        update_game(renderContext);
-        display.update(&shaders);
+        update_game(renderContext, gameState);
+        display.update();
 
 
         // std::string debug_width = "width =\t" + std::to_string(display.width);
@@ -62,8 +78,8 @@ int main() {
 }
 
 
-void update_game(RenderContext* renderContext) {
-    update_game_ptr(renderContext);
+void update_game(RenderContext* renderContextIn, GameState* gameStateIn) {
+    update_game_ptr(renderContextIn, gameStateIn);
 }
 
 
@@ -86,8 +102,10 @@ void hot_reload(BumpAllocator* transientStorage) {
         }
         SM_TRACE("Successfully copied dll");
 
+        // dlerror();
         game_dll = platform_load_lib("./game_load.so");
-        SM_ASSERT(game_dll, "Failed to load game library");
+        // char* err = dlerror();
+        // SM_ASSERT(game_dll, "Failed to load game library: %s", err);
         update_game_ptr = (update_game_type*)platform_load_func(game_dll, "update_game");
         SM_ASSERT(update_game_ptr, "Failed to load symbol 'update_game'");
         SM_ASSERT(update_game_ptr, "Failed to reload function");

@@ -1,3 +1,5 @@
+#include "globals.h"
+
 #include "display.h"
 #include "rendering.h"
 
@@ -84,7 +86,7 @@ bool Display::isClosed() {
     return this->m_isClosed;
 }
 
-void Display::update(const Shaders* const shader) {
+void Display::update() {
     SDL_Event e;
     while(SDL_PollEvent(&e)) {
         switch(e.type) {
@@ -103,7 +105,17 @@ void Display::update(const Shaders* const shader) {
     glViewport(0, 0, this->width, this->height);
 
     Vec2 screenSize = {(float)this->width, (float) this->height};
-    glUniform2fv(shader->screenSizeID, 1, &screenSize.x);
+    glUniform2fv(uniforms->screenSizeID, 1, &screenSize[0]);
+
+    const OrthographicCamera2D& camera = renderContext->gameCamera;
+    Mat4 orthoProj = orthographic_projection(
+        camera.position.x - camera.dimensions.x/2.0f,
+        camera.position.x + camera.dimensions.x/2.0f,
+        camera.position.y - camera.dimensions.y/2.0f,
+        camera.position.y + camera.dimensions.y/2.0f
+    );
+    glUniformMatrix4fv(uniforms->orthoProjID, 1, GL_FALSE, &orthoProj[0][0]);
+
 
     {
         glBufferSubData(GL_SHADER_STORAGE_BUFFER, 0, sizeof(Transform)*renderContext->transforms_count,
@@ -124,4 +136,8 @@ void Display::clear(float r, float g, float b, float a) {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
+void Display::init_uniforms(const GLuint& program) {
+    uniforms->screenSizeID = glGetUniformLocation(program, "screenSize");
+    uniforms->orthoProjID = glGetUniformLocation(program, "orthoProj");
+}
 

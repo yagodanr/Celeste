@@ -16,7 +16,9 @@ public:
 
     void bind();
 
-    GLuint screenSizeID;
+    GLuint get_program() {
+        return m_program;
+    }
 
 private:
 
