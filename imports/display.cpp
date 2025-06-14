@@ -86,22 +86,20 @@ bool Display::isClosed() {
     return this->m_isClosed;
 }
 
-void Display::update() {
-    SDL_Event e;
-    while(SDL_PollEvent(&e)) {
-        switch(e.type) {
-            case SDL_QUIT:
-                this->m_isClosed = true;
-                break;
-            case SDL_WINDOWEVENT:
-                if(e.window.event == SDL_WINDOWEVENT_RESIZED || e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
-                    SDL_GetWindowSize(this->m_window, &this->width, &this->height);
-                    glViewport(0, 0, this->width, this->height); // update size for OpenGL(Claude)
-                }
-        }
-
+void Display::update_events(SDL_Event& e) {
+    switch(e.type) {
+        case SDL_QUIT:
+            this->m_isClosed = true;
+            break;
+        case SDL_WINDOWEVENT:
+            if(e.window.event == SDL_WINDOWEVENT_RESIZED || e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
+                SDL_GetWindowSize(this->m_window, &this->width, &this->height);
+                glViewport(0, 0, this->width, this->height); // update size for OpenGL(Claude)
+            }
     }
+}
 
+void Display::update() {
     glViewport(0, 0, this->width, this->height);
 
     Vec2 screenSize = {(float)this->width, (float) this->height};

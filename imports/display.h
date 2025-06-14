@@ -14,6 +14,7 @@ public:
     bool isClosed();
 
 
+    void update_events(SDL_Event& e);
     void update();
     void clear(float r, float g, float b, float a);
 

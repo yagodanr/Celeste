@@ -20,6 +20,11 @@ void draw_sprite(SpriteID id, Vec2 pos) {
     t.size = ivec2_to_vec2(s.spriteSize);
     t.pos = pos - t.size/2.0f;
 
+    if(renderContext->transforms_count >= MAX_SPRITES) {
+        SM_ASSERT(false, "Too many transforms to render. Over the limit of MAX_SPRITES");
+        return;
+    }
+
     renderContext->transforms[renderContext->transforms_count++] = t;
 }
 

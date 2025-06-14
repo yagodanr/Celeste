@@ -22,10 +22,13 @@ GameState* gameState;
 typedef decltype(update_game) update_game_type;
 static update_game_type* update_game_ptr;
 
+typedef decltype(update_game_events) update_game_events_type;
+static update_game_events_type* update_game_events_ptr;
+
 
 
 void hot_reload(BumpAllocator* transientStorage);
-
+void update_all_events(Display& display);
 
 int main() {
 
@@ -60,6 +63,9 @@ int main() {
         hot_reload(&transientStorage);
         #endif
 
+
+        update_all_events(display);
+
         display.clear(1, 0.3, 0.3, 1);
         update_game(renderContext, gameState);
         display.update();
@@ -80,6 +86,9 @@ int main() {
 
 void update_game(RenderContext* renderContextIn, GameState* gameStateIn) {
     update_game_ptr(renderContextIn, gameStateIn);
+}
+void update_game_events(const SDL_Event& e, GameState* gameStateIn) {
+    update_game_events_ptr(e, gameStateIn);
 }
 
 
@@ -107,9 +116,21 @@ void hot_reload(BumpAllocator* transientStorage) {
         // char* err = dlerror();
         // SM_ASSERT(game_dll, "Failed to load game library: %s", err);
         update_game_ptr = (update_game_type*)platform_load_func(game_dll, "update_game");
-        SM_ASSERT(update_game_ptr, "Failed to load symbol 'update_game'");
-        SM_ASSERT(update_game_ptr, "Failed to reload function");
+        SM_ASSERT(update_game_ptr, "Failed to reload function update_game");
+        update_game_events_ptr = (update_game_events_type*)platform_load_func(game_dll, "update_game_events");
+        SM_ASSERT(update_game_events_ptr, "Failed to reload function update_game_events");
         last_timestamp_dll = cur_timestamp_dll;
     }
 
 }
+
+
+
+void update_all_events(Display& display) {
+    SDL_Event e;
+    while(SDL_PollEvent(&e)) {
+        display.update_events(e);
+        update_game_events(e, gameState);
+    }
+}
+
